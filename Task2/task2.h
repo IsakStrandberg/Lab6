@@ -75,6 +75,69 @@ public:
 
 };
 
+class Alien : public Shape {
+private:
+	float _RectX1;
+	float _RectX2;
+	float _RectX3;
+
+	float _RectY1;
+	float _RectY2;
+
+public:
+	Alien();
+	Alien(Point2D position,
+		int Red, int Green, int Blue, int Alpha, float RectX1,
+		float RectX2, float RectX3,  float RectY1,
+		float RectY2) : Shape(position, Red, Green, Blue, Alpha),
+		_RectX1(RectX1), _RectX2(RectX2), _RectX3(RectX3),
+		_RectY1(RectY1), _RectY2(RectY2) {};
+
+	float GetX1() {
+		return(_RectX1);
+	}
+	float GetX2() {
+		return(_RectX2);
+	}
+	float GetX3() {
+		return(_RectX3);
+	}
+	
+	float GetY1() {
+		return(_RectY1);
+	}
+	float GetY2() {
+		return(_RectY2);
+	}
+
+	void SetX1(float SetX1) {
+		_RectX1 = SetX1;
+	}
+	void SetX2(float SetX2) {
+		_RectX2 = SetX2;
+	}
+	void SetX3(float SetX3) {
+		_RectX3 = SetX3;
+	}
+
+	void SetY1(float SetY1) {
+		_RectY1 = SetY1;
+	}
+	void SetY2(float SetY2) {
+		_RectY2 = SetY2;
+	}
+
+	virtual void render(SDL_Renderer* renderer) {
+		SDL_SetRenderDrawColor(renderer, GetR(), GetG(), GetB(), GetAlpha());
+		SDL_RenderDrawLine(renderer, GetX1(), GetY2(),GetX2(),GetY1());
+		SDL_RenderDrawLine(renderer, GetX1(), GetY2(), GetX2(),_Point2D._y);
+		SDL_RenderDrawLine(renderer, _Point2D._x,GetY2(),GetX3(),GetY1());
+		SDL_RenderDrawLine(renderer, _Point2D._x, GetY2(), GetX3(),_Point2D._y);
+		SDL_RenderDrawLine(renderer, GetX3(), GetY1(), GetX2(), _Point2D._y);
+		SDL_RenderDrawLine(renderer, GetX2(), GetY1(), GetX3(), _Point2D._y);
+	}
+};
+
 class Projectile : public Shape {//inherits shape
 private:
 	float _Width;
@@ -161,50 +224,4 @@ public:
 		//draws a PlayerShip
 
 	}
-};
-
-class Circle : public Shape {// inherits shape
-private:
-	float _Radius;
-
-public:
-	Circle();
-	Circle(Point2D position,
-		int Red, int Green, int Blue, int Alpha, float Radius) :
-		Shape(position, Red, Green, Blue, Alpha), _Radius(Radius) {};
-	//initialiser list
-
-	float GetRadius() {
-		return(_Radius);
-	}
-
-	void SetRadius(float SetR) {
-		_Radius = SetR;
-	}
-
-	virtual void render(SDL_Renderer* renderer) {
-		Shape::render(renderer);
-		/*cout << "Circle " << "x: " << _Point2D._x <<
-			"y: " << _Point2D._y << " " << GetRadius();*/
-
-		int h = 120;
-		int k = 100;
-		int step = 15;
-		int PrevX = _Point2D._x;
-		int PrevY = _Point2D._y;
-
-		SDL_SetRenderDrawColor(renderer, GetR(), GetG(), GetB(), GetAlpha());
-		for (int theta = 0; theta <= 360; theta += step) {
-			_Point2D._x = h + GetRadius() * cos((theta * 3.14159) / 180);
-			_Point2D._y = k + GetRadius() * sin((theta * 3.14159) / 180);
-			SDL_RenderDrawLine(renderer, PrevX, PrevY, _Point2D._x, _Point2D._y);
-			PrevX = _Point2D._x;
-			PrevY = _Point2D._y;
-
-		}
-		//draws a circle
-
-
-	}
-
 };
